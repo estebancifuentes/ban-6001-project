@@ -1,0 +1,30 @@
+# Decision Log
+
+## Assignment 2: Dataset (2026-07-12)
+
+- Dataset: OnlineNewsPopularity from the UCI Machine Learning Repository (source: Fernandes, Vinagre & Cortez, 2015, "A Proactive Intelligent Decision Support System for Predicting the Popularity of Online News")
+- Main variable of interest: shares, because the goal was to predict how many times an article gets shared on social media (article popularity)
+- Key decision: Selected 17 continuous variables and 3 categorical variables (news_category, publish_day_type, title_sentiment_category, each with ≤3 categories) from the original 60 columns, based on relevance to predicting article popularity
+
+## Assignment 3: Descriptive Stats (2026-07-26)
+
+- Cleaning done: No missing values or duplicate rows across the ten selected variables; no imputation needed
+- Key decision: Several continuous variables (shares, average keyword popularity, number of hyperlinks, number of images, title word count) were heavily right-skewed, so median was used alongside mean when interpreting central tendency
+- Most surprising pattern: None of the six continuous predictors examined showed a strong linear correlation with shares individually, suggesting popularity isn't driven by any single feature in isolation
+
+## Assignment 4: Probability (2026-07-26)
+
+- Normal vs. empirical, and why: Of the seven variables assessed, only n_tokens_title (skew ≈ 0.17) and global_sentiment_polarity (skew ≈ 0.11) were close enough to normal to apply probability assumptions; the rest were heavily right-skewed with high kurtosis, so median-based benchmarks were used instead of mean-based ones for those variables
+- Key decision: Despite the skew, none of the continuous predictors correlated strongly with shares, reinforcing that virality likely isn't a linear function of any single variable
+
+## Assignment 5: Inference (2026-08-09)
+
+- What we tested: (1) whether average headline length exceeds 10 words, and (2) whether average sentiment polarity is greater than 0
+- Alpha: 0.05 for both one-sample t-tests
+- Conclusion: Rejected both null hypotheses — headline length averages ~10.4 words (t = 37.56, p < 0.001) and sentiment polarity averages ~0.119, both statistically significantly greater than the hypothesized values. Also built a 95% confidence interval for average shares (~3,281–3,510). Large sample size (n = 39,644) supported the normality and independence assumptions needed for inference.
+
+## Assignment 6: Regression (2026-08-12)
+
+- First predictor removed and why: Started with 11 predictors (Model 1); the "title sentiment = Neutral" category level was removed first (least significant), producing Model 2. Continued removing non-significant predictors (n_tokens_title, n_tokens_content, global_sentiment_polarity, remaining title sentiment category, and day_type = weekday) across subsequent models until the final model retained only num_hrefs, num_imgs, kw_avg_avg, and news_category (tech_business, world_other) — all statistically significant (p < 0.05)
+- Multicollinearity handling: Checked a correlation matrix of the continuous predictors in the final model; the highest correlation (num_hrefs vs. num_imgs) was 0.343, well below the 0.7 concern threshold, so no predictors were dropped for multicollinearity
+- Key takeaway: Final model explains only ~1.4% of variance in shares (R² = 0.0137) despite significant predictors, due to the large sample size; kw_avg_avg (historical keyword performance) was the strongest predictor
