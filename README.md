@@ -22,4 +22,4 @@ Statistics and regression analysis exploring what predicts how many times an onl
 
 ## Author
 
-Esteban Cifuentes Coyoy. This analysis was completed as part of a team project for BAN-6001-A; this repository reflects the individual submission requirement, with team members' shared work uploaded to each member's own repo.
+Esteban Cifuentes Coyoy. This analysis was completed as part of a team project for BAN-6001-A
